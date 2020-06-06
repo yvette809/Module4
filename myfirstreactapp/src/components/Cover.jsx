@@ -1,46 +1,110 @@
-import React, {Component} from 'react'
-import {Container,Row, Col, Carousel} from 'react-bootstrap'
-import books from '../jsons/fantasy.json'
-import '../App.css';
+import React from "react";
+import {
+  Jumbotron,
+  Button,
+  Container,
+  Row,
+  Col,
+  Card,
+  Dropdown,
+  DropdownButton,
+  InputGroup,
+  FormControl,
+} from "react-bootstrap";
 
+let bookCategories = ["fantasy", "horror", "history", "romance", "scifi"];
+let books = {
+  fantasy: require("../jsons/fantasy.json"),
+  horror: require("../jsons/horror.json"),
+  history: require("../jsons/history.json"),
+  romance: require("../jsons/romance.json"),
+  scifi: require("../jsons/scifi.json"),
+};
 
+class Cover extends React.Component {
+  constructor(props) {
+    super(props);
 
-const Cover = () => {
+    this.state = {
+      books: books.fantasy.slice(0, 12),
+      categorySelected: this.props.jumboTitle,
+    };
+  }
+
+  handleDropdownChange = (category) => {
+    this.setState({
+      books: books[category].slice(0, 12),
+      categorySelected: category,
+    });
+  };
+
+  handleSearchQuery = (searchQuery) => {
+    let category = this.state.categorySelected;
+
+    if (searchQuery) {
+      let filteredBooks = books[category].filter((book) =>
+        book.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      this.setState({ books: filteredBooks.slice(0, 12) });
+    } else {
+      this.setState({ books: books[category].slice(0, 12) });
+    }
+  };
+
+  render() {
     return (
+      <div>
         <Container>
-            <Row>
-                <Col>
-                <h1>Books</h1>
-                <p>Collection of The Best Books</p>
-                <p>Try our Books and Thank Us Later!</p>
-                <Carousel>
-                    {books.map(book => {
-                        return (
-                        <Carousel.Item key = {book.asin}>
-                        <img
-                          className="d-block w-100"
-                          src={book.img}
-                          alt={book.title}
-                        />
-                        <Carousel.Caption>
-                        <h3>${book.price}</h3>
-                          <p>{book.category}</p>
-                        </Carousel.Caption>
-                      </Carousel.Item>
-                      
-                        )
-                    })}
-
-                </Carousel>
-                
-                </Col>
-
-            </Row>
+          <InputGroup>
+            <DropdownButton
+              as={InputGroup.Prepend}
+              id="dropdown-basic-button"
+              className="mb-3"
+              title={this.state.categorySelected}
+            >
+              {bookCategories.map((category, index) => {
+                return (
+                  <Dropdown.Item
+                    href="#/action-1"
+                    key={`dropdown-category-${index}`}
+                    onClick={() => this.handleDropdownChange(category)}
+                  >
+                    {category}
+                  </Dropdown.Item>
+                );
+              })}
+            </DropdownButton>
+            <FormControl
+              placeholder="Search Books by Title"
+              aria-label="Search"
+              aria-describedby="basic-addon1"
+              onChange={(e) => this.handleSearchQuery(e.target.value)}
+            />
+          </InputGroup>
+          <Row>
+            {this.state.books ? (
+              this.state.books.map((book) => {
+                return (
+                  <Col xs={6} key={book.asin}>
+                    <Card style={{ width: "18rem" }}>
+                      <Card.Img variant="top" src={book.img} />
+                      <Card.Body>
+                        <Card.Title>{book.title}</Card.Title>
+                        <Card.Text>€{book.price}</Card.Text>
+                        <Button variant="primary">Go somewhere</Button>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                );
+              })
+            ) : (
+              <div> nothing here </div>
+            )}
+          </Row>
         </Container>
- 
-    )
+      </div>
+    );
+  }
 }
-
-
 
 export default Cover;

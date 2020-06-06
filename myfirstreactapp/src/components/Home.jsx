@@ -8,7 +8,7 @@ class Home extends Component {
     constructor(props){
         super(props)
         this.state = {
-            title:'Welcome to Strive Bookstore'
+        title:'Welcome to Strive Bookstore!'
         }
     };
     render(){
