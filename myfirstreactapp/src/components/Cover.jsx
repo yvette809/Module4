@@ -11,7 +11,7 @@ import {
   InputGroup,
   FormControl,
 } from "react-bootstrap";
-
+import { Link } from "react-router-dom";
 let bookCategories = ["fantasy", "horror", "history", "romance", "scifi"];
 let books = {
   fantasy: require("../jsons/fantasy.json"),
@@ -87,7 +87,10 @@ class Cover extends React.Component {
                 return (
                   <Col xs={6} key={book.asin}>
                     <Card style={{ width: "18rem" }}>
-                      <Card.Img variant="top" src={book.img} />
+                      <Link to={`/book/${book.asin}`}>
+                        <Card.Img variant="top" src={book.img} />
+                      </Link>
+
                       <Card.Body>
                         <Card.Title>{book.title}</Card.Title>
                         <Card.Text>€{book.price}</Card.Text>

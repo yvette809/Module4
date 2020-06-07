@@ -1,25 +1,23 @@
-import React from 'react';
-import NavBar from './components/Navbar'
-import Footer from './components/Footer'
-import Home from './components/Home'
-import Cover from './components/Cover'
-import Comments from './components/Comments'
-import './App.css';
-
-function App(){
-  return(
-    <div className = 'App'>
-    <NavBar title = "strive Bookstore"/>
-    <Home/>
-    <Cover/>
-    <Footer/>
-    <Comments />
-    
-    </div>
-
-  )
+import React from "react";
+import NavBar from "./components/Navbar";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import "./App.css";
+import Footer from "./components/Footer";
+import Browse from "./pages/Browse";
+import Book from "./pages/Book";
+function App() {
+  return (
+    <Router>
+      <NavBar title="strive Bookstore" />
+      <Route path="/home" component={Home} exact />
+      <Route path="/about" component={About} />
+      <Route path="/browse" component={Browse} />
+      <Route path="/book/:bookId" component={Book} />
+      {/* <Footer /> */}
+    </Router>
+  );
 }
-
-
 
 export default App;
